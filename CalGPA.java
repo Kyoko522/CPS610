@@ -70,8 +70,3 @@ class CalGPA {
         r.close();
     }
 }
-
-
-// To run use the following command in terminal
-// javac -cp "lib/ojdbc8.jar" CalGPA.java
-// java -cp ".:lib/ojdbc8.jar" CalGPA
