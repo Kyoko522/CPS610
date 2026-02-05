@@ -4,7 +4,6 @@ import java.sql.*;
 class CalGPA {
     public static void main(String args[]) throws SQLException, IOException {
         try {
-            // Class.forName("oracle.jdbc.driver.OrableDriver");
             Class.forName("oracle.jdbc.driver.OracleDriver"); 
         } catch (ClassNotFoundException x) {
             System.out.println("Driver could not be loaded.");
@@ -15,13 +14,17 @@ class CalGPA {
         char grade;
         int credit;
         
-        // dbacct = readEntry("Enter database account: "); //system
-        // passwrd = readEntry("Enter password: "); //password123
-        dbacct = "system"; // hardcoded
+
+        dbacct = "kaiadams"; // hardcoded
         passwrd = "password123"; // hardcoded
         
-        // Connection conn = DriverManager.getConnection("jdbc:oracle:oci8:"+dbacct+"/"+passwrd); // Original
-        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", dbacct, passwrd);
+
+        Connection conn = DriverManager.getConnection(
+            "jdbc:oracle:thin:@//localhost:1521/orcl",
+            dbacct,
+            passwrd
+        );
+
         
         // SQL query to get all grades for a specific student name
         String stmt1 = 
@@ -34,7 +37,6 @@ class CalGPA {
         
         PreparedStatement p = conn.prepareStatement(stmt1);
         
-        // name = readEntry("Please enter your name: "); // Original
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Please enter your name: ");
         name = reader.readLine();
@@ -46,8 +48,7 @@ class CalGPA {
         double count = 0, sum = 0, avg = 0;
         
         while (r.next()) {
-            // grade = r.getChar(1); // Original - getChar doesn't exist
-            // credit = r.getInteger(2); // Original - getInteger doesn't exist
+
             grade = r.getString(1).charAt(0); // Fixed
             credit = r.getInt(2); // Fixed
             
@@ -64,7 +65,6 @@ class CalGPA {
         
         avg = sum / count;
         
-        // System.out.printline("Student named "+name+" has a grade point average "+avg+"."); // Original (typo)
         System.out.println("Student named " + name + " has a grade point average " + avg + ".");
         
         r.close();
