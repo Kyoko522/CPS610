@@ -71,7 +71,7 @@ public class TwoPhaseLockScheduler {
     }
 
     // loads any records that already exist in the DB into the in-memory cache
-    // since initDB() always drops and recreates the tables, this will always be empty on startup
+    // since initDB() always drops and recreates the tables, this will always be empty on startup (just so we get same reson for part a and b every tinme)
     // kept here in case the reset behaviour is ever changed back to persistent mode
     private void loadRecordsFromDB() throws SQLException {
         try (Statement st = conn.createStatement();
