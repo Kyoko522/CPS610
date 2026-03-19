@@ -1,0 +1,26 @@
+# Requirements for CPS 610 - Assignment 4 (Two-Phase Locking Scheduler)
+# Java project — no Python packages needed.
+
+# ── Java ────────────────────────────────────────────────────────────────────
+# Java 11 or higher (uses List.of() and var-args introduced in Java 9+)
+# Check your version: java -version
+
+# ── SQLite JDBC Driver ───────────────────────────────────────────────────────
+# The only external dependency. Download the JAR and place it in the lib/ folder.
+#
+# Name:    sqlite-jdbc-3.49.1.0.jar
+# Version: 3.49.1.0
+# Source:  https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.49.1.0/sqlite-jdbc-3.49.1.0.jar
+#
+# Download command (run from the L4 project folder):
+#   mkdir -p lib
+#   curl -L -o lib/sqlite-jdbc-3.49.1.0.jar https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.49.1.0/sqlite-jdbc-3.49.1.0.jar
+
+# ── Compile & Run ────────────────────────────────────────────────────────────
+# From the L4 project folder:
+#   javac -cp ".:lib/sqlite-jdbc-3.49.1.0.jar" *.java
+#   java  -cp ".:lib/sqlite-jdbc-3.49.1.0.jar" Main
+#
+# On Windows replace the colon with a semicolon:
+#   javac -cp ".;lib/sqlite-jdbc-3.49.1.0.jar" *.java
+#   java  -cp ".;lib/sqlite-jdbc-3.49.1.0.jar" Main
