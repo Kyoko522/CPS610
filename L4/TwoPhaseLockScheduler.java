@@ -41,11 +41,14 @@ public class TwoPhaseLockScheduler {
         }
     }
 
-    // creates the two persistent tables if they don't already exist in the SQLite file:
+    // drops and recreates both tables on every run so the DB always starts clean
     //   records   — stores each data item (record_id, value), the actual database being transacted on
     //   log_table — stores every committed operation for rollback purposes (mirrors the in-memory logTable)
     private void initDB() throws SQLException {
         try (Statement st = conn.createStatement()) {
+            // drop first so every run starts with a fresh empty database
+            st.executeUpdate("DROP TABLE IF EXISTS records");
+            st.executeUpdate("DROP TABLE IF EXISTS log_table");
             st.executeUpdate(
                 "CREATE TABLE IF NOT EXISTS records (" +
                 "  record_id INTEGER PRIMARY KEY," +
@@ -68,28 +71,14 @@ public class TwoPhaseLockScheduler {
     }
 
     // loads any records that already exist in the DB into the in-memory cache
-    // this means re-running the program picks up the committed values from the last run
-    // also resumes the log timestamp counter past the highest existing entry so there are no primary key conflicts
+    // since initDB() always drops and recreates the tables, this will always be empty on startup
+    // kept here in case the reset behaviour is ever changed back to persistent mode
     private void loadRecordsFromDB() throws SQLException {
         try (Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery("SELECT record_id, value FROM records")) {
             while (rs.next()) {
                 database.put(rs.getInt("record_id"), rs.getInt("value"));
             }
-        }
-        if (!database.isEmpty()) {
-            System.out.println("Loaded records from DB:");
-            database.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(e -> System.out.println("  Rec " + e.getKey() + " = " + e.getValue()));
-            System.out.println();
-        }
-
-        // resume log timestamps after the highest existing timestamp so there are no PK conflicts
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT MAX(timestamp) AS maxts FROM log_table")) {
-            if (rs.next() && rs.getObject("maxts") != null)
-                logTimestamp = rs.getInt("maxts") + 1;  // start counting from after the last saved entry
         }
     }
 
