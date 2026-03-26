@@ -22,10 +22,10 @@ public class Main {
 
     public static void main(String[] args) {
         String[] filePaths = {
-                "Map_Reduce_Process/src/input/input1.txt",
-                "Map_Reduce_Process/src/input/input2.txt",
-                "Map_Reduce_Process/src/input/input3.txt",
-                "Map_Reduce_Process/src/input/input4.txt"
+                "Assignment 5 Map_Reduce/src/input/input1.txt",
+                "Assignment 5 Map_Reduce/src/input/input2.txt",
+                "Assignment 5 Map_Reduce/src/input/input3.txt",
+                "Assignment 5 Map_Reduce/src/input/input4.txt"
         };
 
         int hashSize = 17;
